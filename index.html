@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asesmen Pendidikan Pancasila Kelas 3 FASE B</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- SheetJS (XLSX) CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        /* Custom Scrollbar for smooth UX */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(241, 245, 249, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen relative overflow-x-hidden flex flex-col justify-between text-slate-800">
+
+    <!-- Background Decorative Blur Circles -->
+    <div class="fixed top-0 left-0 w-96 h-96 bg-blue-200 rounded-full blur-3xl opacity-30 -z-10 pointer-events-none"></div>
+    <div class="fixed bottom-0 right-0 w-96 h-96 bg-purple-200 rounded-full blur-3xl opacity-30 -z-10 pointer-events-none"></div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="w-full max-w-4xl mx-auto px-4 py-4 md:py-6 flex-grow flex flex-col">
+
+        <!-- HEADER ATAS -->
+        <header class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg rounded-b-[2rem] p-4 md:p-6 mb-6 text-center relative overflow-hidden">
+            <!-- Top Watermark & Guru Access -->
+            <div class="flex justify-between items-center text-xs opacity-90 mb-3 px-2">
+                <span class="font-semibold tracking-wide">UPTD SDN 16 BARRU</span>
+                <button onclick="bukaModalGuru()" class="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium transition duration-200 flex items-center gap-1">
+                    🔒 Area Guru
+                </button>
+            </div>
+
+            <!-- Logos Row -->
+            <div class="flex justify-center items-center gap-4 my-2">
+                <img src="https://blog.pengajartekno.co.id/wp-content/uploads/2022/11/tut-wuri-handayani-7765.png" 
+                     alt="Logo Tut Wuri Handayani" 
+                     class="w-14 h-14 md:w-16 md:h-16 object-contain drop-shadow-md"
+                     onerror="this.src='https://placehold.co/64x64/3b82f6/fff?text=Tut+Wuri'">
+                
+                <img src="https://vectorez.biz.id/wp-content/uploads/2023/12/Logo-Kabupaten-Barru.png" 
+                     alt="Logo Kab Barru" 
+                     class="w-14 h-14 md:w-16 md:h-16 object-contain drop-shadow-md"
+                     onerror="this.src='https://placehold.co/64x64/3b82f6/fff?text=Barru'">
+            </div>
+
+            <!-- Title & Subtitle -->
+            <h1 class="text-xl md:text-2xl font-bold mt-2 tracking-tight drop-shadow">
+                Asesmen Pendidikan Pancasila Kelas 3 FASE B
+            </h1>
+            <p class="text-xs md:text-sm text-blue-100 mt-1 font-medium">
+                Materi Tempat Tinggalku
+            </p>
+        </header>
+
+        <!-- Dynamic Content Body -->
+        <main id="app-content" class="flex-grow flex flex-col justify-center">
+
+            <!-- 1. HALAMAN AWAL / GREETING -->
+            <section id="page-greeting" class="bg-white/80 backdrop-blur-md shadow-xl border border-white/50 rounded-2xl p-6 md:p-8 my-auto">
+                <div class="text-center max-w-lg mx-auto">
+                    <div class="inline-block p-3 bg-blue-100 rounded-full text-blue-600 mb-3">
+                        🏠
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-2">
+                        Selamat Datang, Selamat Mengerjakan
+                    </h2>
+                    <p class="text-sm text-slate-600 mb-6">
+                        Isi namamu dengan benar sebelum mulai belajar ya!
+                    </p>
+
+                    <form id="form-siswa" onsubmit="mulaiUjian(event)" class="space-y-4 text-left">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">NAMA LENGKAP</label>
+                            <input type="text" id="input-nama" required 
+                                   class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/90 text-sm"
+                                   placeholder="Masukkan Nama Lengkap Sesuai Absen">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">KELAS / NOMOR ABSEN</label>
+                            <input type="text" id="input-kelas" required 
+                                   class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/90 text-sm"
+                                   placeholder="Contoh: Kelas 3A / 05">
+                        </div>
+                        <button type="submit" 
+                                class="w-full mt-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-3.5 px-6 rounded-xl shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-indigo-700 transition transform active:scale-95 text-base">
+                            🚀 Mulai Mengerjakan Asesmen
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- 2. HALAMAN SISWA / AREA SOAL -->
+            <section id="page-soal" class="hidden flex-col gap-4">
+                <!-- Bar Informasi (Timer & Progress Bar) -->
+                <div class="bg-white/80 backdrop-blur-md shadow-md border border-white/50 rounded-2xl p-4 flex flex-wrap justify-between items-center gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">⏱️</span>
+                        <div>
+                            <p class="text-[10px] text-slate-500 font-bold uppercase">Waktu Mengerjakan</p>
+                            <p id="timer-display" class="text-base font-bold text-blue-600">0m 00s</p>
+                        </div>
+                    </div>
+                    <!-- Live Assessment Badge -->
+                    <div class="bg-black/80 backdrop-blur-sm border-2 border-cyan-400 rounded-full px-3 py-1 text-white font-bold text-[13px] shadow">
+                        ● Live Assessment
+                    </div>
+                </div>
+
+                <!-- Card Soal Utama -->
+                <div class="bg-white/80 backdrop-blur-md shadow-xl border border-white/50 rounded-2xl p-6 relative">
+                    <!-- Header Soal Badge -->
+                    <div class="flex justify-between items-center mb-4 border-b pb-3">
+                        <span id="label-nomor-soal" class="text-xs font-bold bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
+                            Soal 1 dari 5
+                        </span>
+                        <!-- Badge Top Right Area Soal -->
+                        <span class="bg-black/80 backdrop-blur-sm border-2 border-cyan-400 rounded-full px-3 py-1 text-white font-bold text-xs shadow">
+                            🏠 Fase B - Tempat Tinggalku
+                        </span>
+                    </div>
+
+                    <!-- Pertanyaan -->
+                    <h3 id="teks-pertanyaan" class="text-base md:text-lg font-semibold text-slate-800 mb-2 leading-relaxed">
+                        <!-- Pertanyaan Diisi JS -->
+                    </h3>
+                    <p id="petunjuk-multi" class="text-xs font-medium text-amber-600 mb-4 hidden">
+                        ⚠️ Pilih maksimal 2 jawaban yang tepat!
+                    </p>
+
+                    <!-- Pilihan Jawaban -->
+                    <div id="container-opsi" class="space-y-3 mb-6">
+                        <!-- Opsi A-D Diisi JS -->
+                    </div>
+
+                    <!-- Navigasi Tombol Sebelum/Sesudah -->
+                    <div class="flex justify-between items-center pt-4 border-t">
+                        <button id="btn-prev" onclick="navigasiSoal(-1)" 
+                                class="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold px-5 py-2.5 rounded-xl transition text-sm">
+                            ⬅️ Sebelumnya
+                        </button>
+                        <button id="btn-next" onclick="navigasiSoal(1)" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl shadow transition text-sm">
+                            Selanjutnya ➡️
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Grid Navigasi Nomor Soal -->
+                <div class="bg-white/80 backdrop-blur-md shadow-md border border-white/50 rounded-2xl p-4">
+                    <p class="text-xs font-bold text-slate-600 uppercase mb-3">Navigasi Nomor Soal:</p>
+                    <div id="grid-nomor-soal" class="grid grid-cols-5 gap-2 text-center">
+                        <!-- Tombol Grid 1-5 Diisi JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. HALAMAN HASIL -->
+            <section id="page-hasil" class="hidden bg-white/80 backdrop-blur-md shadow-xl border border-white/50 rounded-2xl overflow-hidden my-auto">
+                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white text-center rounded-b-2xl shadow-md">
+                    <h2 id="hasil-judul" class="text-xl md:text-2xl font-bold mb-1">
+                        <!-- Judul Dinamis -->
+                    </h2>
+                    <p class="text-xs md:text-sm text-blue-100">Hasil Asesmen Pendidikan Pancasila</p>
+                </div>
+
+                <div class="p-6 space-y-6">
+                    <!-- Kartu Nilai Utama & Status -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                        <div class="bg-amber-100 border border-amber-300 rounded-2xl p-4 shadow-sm">
+                            <p class="text-xs font-bold text-amber-800 uppercase">Nilai Akhir</p>
+                            <p id="hasil-nilai-akhir" class="text-4xl font-extrabold text-amber-600 my-1">0</p>
+                            <p class="text-[10px] text-amber-700">Skala 0 - 100</p>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 shadow-sm flex flex-col justify-center items-center">
+                            <p class="text-xs font-bold text-slate-600 uppercase mb-1">Status KKTP (75)</p>
+                            <span id="hasil-status-kktp" class="px-4 py-1.5 rounded-full font-bold text-sm">
+                                -
+                            </span>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 shadow-sm flex flex-col justify-center items-center">
+                            <p class="text-xs font-bold text-slate-600 uppercase mb-1">Waktu Pengerjaan</p>
+                            <p id="hasil-waktu" class="text-xl font-bold text-slate-800">0m 0s</p>
+                        </div>
+                    </div>
+
+                    <!-- 4 Kartu Stats Detail -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div class="bg-green-50 border border-green-200 rounded-xl p-3 text-center">
+                            <p class="text-[11px] font-semibold text-green-700 uppercase">Benar</p>
+                            <p id="hasil-benar" class="text-2xl font-bold text-green-600">0</p>
+                        </div>
+                        <div class="bg-red-50 border border-red-200 rounded-xl p-3 text-center">
+                            <p class="text-[11px] font-semibold text-red-700 uppercase">Salah</p>
+                            <p id="hasil-salah" class="text-2xl font-bold text-red-600">0</p>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-center">
+                            <p class="text-[11px] font-semibold text-amber-700 uppercase">Kosong</p>
+                            <p id="hasil-kosong" class="text-2xl font-bold text-amber-600">0</p>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 text-center">
+                            <p class="text-[11px] font-semibold text-blue-700 uppercase">Akurasi</p>
+                            <p id="hasil-akurasi" class="text-2xl font-bold text-blue-600">0%</p>
+                        </div>
+                    </div>
+
+                    <!-- Analisis & Rekomendasi -->
+                    <div class="space-y-3">
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-sm text-slate-700">
+                            <strong>Analisis Kompetensi:</strong> <span id="hasil-analisis-teks">-</span>
+                        </div>
+                        <div id="hasil-rekomendasi-box" class="p-4 rounded-xl text-sm font-medium border">
+                            <!-- Rekomendasi Dinamis -->
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <div class="text-center pt-2">
+                        <button onclick="kerjakanLagi()" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-xl shadow-md transition">
+                            🔄 Kerjakan Lagi
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. HALAMAN GURU DASHBOARD -->
+            <section id="page-guru" class="hidden space-y-6">
+                <div class="flex justify-between items-center bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-white/50 shadow-md">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800">Board Rekapitulasi Nilai & Analisis</h2>
+                        <p class="text-xs text-slate-500">Data tersinkron otomatis via Cloud & Peramban</p>
+                    </div>
+                    <button onclick="tutupDashboardGuru()" class="text-slate-500 hover:text-slate-700 text-sm font-semibold px-3 py-1 bg-slate-200 rounded-lg">
+                        ✖ Keluar Guru
+                    </button>
+                </div>
+
+                <!-- 4 Kartu Statistik Ringkasan -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-white/50 shadow-md text-center">
+                        <p class="text-xs font-semibold text-slate-500 uppercase">Jumlah Mengerjakan</p>
+                        <p id="guru-total-siswa" class="text-3xl font-extrabold text-blue-600 mt-1">0</p>
+                    </div>
+                    <div class="bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-white/50 shadow-md text-center">
+                        <p class="text-xs font-semibold text-slate-500 uppercase">Rata-Rata Kelas</p>
+                        <p id="guru-rata-rata" class="text-3xl font-extrabold text-indigo-600 mt-1">0</p>
+                    </div>
+                    <div class="bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-white/50 shadow-md text-center">
+                        <p class="text-xs font-semibold text-slate-500 uppercase">Tuntas ≥75</p>
+                        <p id="guru-total-tuntas" class="text-3xl font-extrabold text-green-600 mt-1">0</p>
+                    </div>
+                    <div class="bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-white/50 shadow-md text-center">
+                        <p class="text-xs font-semibold text-slate-500 uppercase">Ketuntasan</p>
+                        <p id="guru-persen-tuntas" class="text-3xl font-extrabold text-amber-600 mt-1">0%</p>
+                    </div>
+                </div>
+
+                <!-- Action Toolbar & Table Rekap -->
+                <div class="bg-white/80 backdrop-blur-md rounded-2xl border border-white/50 shadow-xl overflow-hidden p-4">
+                    <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+                        <h3 class="font-bold text-slate-800">Daftar Hasil Siswa</h3>
+                        <div class="flex gap-2">
+                            <button onclick="unduhRekapExcel()" class="bg-green-600 hover:bg-green-700 text-white text-xs font-semibold px-4 py-2 rounded-xl shadow flex items-center gap-1 transition">
+                                📊 Unduh Rekap (Excel/CSV)
+                            </button>
+                            <button onclick="hapusSemuaDataGuru()" class="bg-red-500 hover:bg-red-600 text-white text-xs font-semibold px-3 py-2 rounded-xl shadow flex items-center gap-1 transition" title="Hapus Semua Data">
+                                🗑️ Clear Data
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Table Responsive -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs md:text-sm">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 border-b">
+                                    <th class="p-3">NAMA SISWA</th>
+                                    <th class="p-3">KELAS/ABSEN</th>
+                                    <th class="p-3">NILAI</th>
+                                    <th class="p-3">BENAR/SALAH</th>
+                                    <th class="p-3">WAKTU</th>
+                                    <th class="p-3">STATUS KKTP</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabel-rekap-body">
+                                <!-- Row Data Diisi JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER WAJIB MUNCUL DI 3 TEMPAT (TEMPAT 3 FOOTER UTAMA) -->
+        <footer class="mt-8 text-center text-xs text-slate-500 space-y-1 py-4">
+            <p class="italic text-slate-600 font-medium">by Nana Alfiana,S.Pd.,Gr</p>
+            <p class="text-[11px] text-slate-400">Platform Asesmen Digital Universal • KM Deep Learning • Dirancang untuk Pendidikan Berkualitas</p>
+        </footer>
+    </div>
+
+    <!-- MODAL CUSTOM UNTUK ALERT & LOGIN GURU (TANPA ALERT() BROWSER) -->
+    <div id="modal-container" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div id="modal-box" class="bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full space-y-4 text-center transform transition-all scale-95">
+            <h3 id="modal-title" class="text-lg font-bold text-slate-800">Pemberitahuan</h3>
+            <p id="modal-message" class="text-sm text-slate-600">Pesan modal</p>
+            
+            <!-- Dynamic input inside modal for Password Guru -->
+            <div id="modal-input-wrapper" class="hidden">
+                <input type="password" id="modal-input-pass" placeholder="Masukkan Password Guru" 
+                       class="w-full px-4 py-2 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div id="modal-buttons" class="flex justify-center gap-2 pt-2">
+                <button id="modal-btn-ok" class="bg-blue-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-blue-700">OK</button>
+                <button id="modal-btn-cancel" class="bg-slate-200 text-slate-700 px-5 py-2 rounded-xl text-sm font-semibold hover:bg-slate-300 hidden">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIKA JAVASCRIPT LENGKAP -->
+    <script>
+        // ----------------------------------------------------
+        // KONEKSI WAJIB SCRIPT URL GOOGLE SHEETS
+        // ----------------------------------------------------
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxj1UZW87QelraFcAbwkBHFQ5sW3vUfwhDOdcSzUpFJl5woJzYHrNFo2ofFI3nhU9r/exec";
+
+        // ----------------------------------------------------
+        // DATA SOAL MANUAL SISWA
+        // ----------------------------------------------------
+        const soalData = [
+            {
+                q: "Apa yang dimaksud dengan denah?",
+                ops: [
+                    "Gambar pemandangan alam",
+                    "Gambar petunjuk yang menunjukkan letak suatu tempat atau lokasi",
+                    "Peta seluruh dunia",
+                    "Lukisan hiasan dinding"
+                ],
+                kunci: [1], // B
+                multi: false
+            },
+            {
+                q: "Sebutkan 2 kegunaan atau manfaat dari denah!",
+                ops: [
+                    "Memudahkan mencari lokasi dan mencegah agar tidak tersesat",
+                    "Mengukur tinggi bangunan dan luas tanah",
+                    "Menentukan harga rumah dan tanah",
+                    "Memperindah hiasan dinding rumah"
+                ],
+                kunci: [0], // A
+                multi: false
+            },
+            {
+                q: "Sebutkan 4 arah mata angin utama yang kamu ketahui!",
+                ops: [
+                    "Timur Laut, Tenggara, Barat Daya, Barat Laut",
+                    "Atas, Bawah, Kiri, Kanan",
+                    "Depan, Belakang, Samping Kiri, Samping Kanan",
+                    "Utara, Selatan, Timur, Barat"
+                ],
+                kunci: [3], // D
+                multi: false
+            },
+            {
+                q: "Sebutkan 2 contoh bangunan penting yang ada di sekitar rumahmu!",
+                ops: [
+                    "Gunung dan Sungai",
+                    "Masjid dan Puskesmas",
+                    "Lapangan dan Angkringan",
+                    "Awan dan Langit"
+                ],
+                kunci: [1, 2], // B dan C (2 Jawaban)
+                multi: true
+            },
+            {
+                q: "Jika kamu berdiri menghadap matahari terbit, arah mana yang ada di depanmu?",
+                ops: [
+                    "Arah Barat",
+                    "Arah Selatan",
+                    "Arah Timur",
+                    "Arah Utara"
+                ],
+                kunci: [2], // C
+                multi: false
+            }
+        ];
+
+        // ----------------------------------------------------
+        // STATE APLIKASI
+        // ----------------------------------------------------
+        let siswaNama = "";
+        let siswaKelas = "";
+        let indexSoalAktif = 0;
+        let jawabanSiswa = {}; // Key: index soal, Value: Array index jawaban [0,1]
+        let timerSeconds = 0;
+        let timerInterval = null;
+        let broadcastChannel = null;
+
+        // BroadcastChannel Sync Lintas Tab
+        if ('BroadcastChannel' in window) {
+            broadcastChannel = new BroadcastChannel('rekap_asesmen_channel');
+            broadcastChannel.onmessage = (event) => {
+                if (event.data === 'update_data') {
+                    renderTabelGuru();
+                }
+            };
+        }
+
+        // ----------------------------------------------------
+        // UTILITY CUSTOM MODAL (MENGGANTIKAN ALERT BROWSER)
+        // ----------------------------------------------------
+        function showModal(title, message, isInput = false, onOk = null) {
+            const modal = document.getElementById('modal-container');
+            const modalTitle = document.getElementById('modal-title');
+            const modalMsg = document.getElementById('modal-message');
+            const modalInputWrapper = document.getElementById('modal-input-wrapper');
+            const modalInput = document.getElementById('modal-input-pass');
+            const btnOk = document.getElementById('modal-btn-ok');
+            const btnCancel = document.getElementById('modal-btn-cancel');
+
+            modalTitle.innerText = title;
+            modalMsg.innerText = message;
+            modalInput.value = "";
+
+            if (isInput) {
+                modalInputWrapper.classList.remove('hidden');
+                btnCancel.classList.remove('hidden');
+            } else {
+                modalInputWrapper.classList.add('hidden');
+                btnCancel.classList.add('hidden');
+            }
+
+            modal.classList.remove('hidden');
+
+            btnOk.onclick = () => {
+                modal.classList.add('hidden');
+                if (onOk) onOk(isInput ? modalInput.value : true);
+            };
+
+            btnCancel.onclick = () => {
+                modal.classList.add('hidden');
+            };
+        }
+
+        // ----------------------------------------------------
+        // ALUR SISWA
+        // ----------------------------------------------------
+        function mulaiUjian(e) {
+            e.preventDefault();
+            const nama = document.getElementById('input-nama').value.trim();
+            const kelas = document.getElementById('input-kelas').value.trim();
+
+            if (!nama || !kelas) {
+                showModal("Perhatian", "Silakan isi Nama Lengkap dan Kelas/Nomor Absen terlebih dahulu.");
+                return;
+            }
+
+            siswaNama = nama;
+            siswaKelas = kelas;
+            jawabanSiswa = {};
+            indexSoalAktif = 0;
+            timerSeconds = 0;
+
+            // Pindah Tampilan
+            document.getElementById('page-greeting').classList.add('hidden');
+            document.getElementById('page-soal').classList.remove('hidden');
+            document.getElementById('page-soal').classList.add('flex');
+
+            // Start Timer
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timerSeconds++;
+                const m = Math.floor(timerSeconds / 60);
+                const s = timerSeconds % 60;
+                document.getElementById('timer-display').innerText = `${m}m ${s < 10 ? '0' : ''}${s}s`;
+            }, 1000);
+
+            renderSoal();
+            renderGridNavigasi();
+        }
+
+        function renderSoal() {
+            const soal = soalData[indexSoalAktif];
+            document.getElementById('label-nomor-soal').innerText = `Soal ${indexSoalAktif + 1} dari ${soalData.length}`;
+            document.getElementById('teks-pertanyaan').innerText = `${indexSoalAktif + 1}. ${soal.q}`;
+
+            const petunjuk = document.getElementById('petunjuk-multi');
+            if (soal.multi) {
+                petunjuk.classList.remove('hidden');
+            } else {
+                petunjuk.classList.add('hidden');
+            }
+
+            const container = document.getElementById('container-opsi');
+            container.innerHTML = "";
+
+            const ans = jawabanSiswa[indexSoalAktif] || [];
+
+            soal.ops.forEach((opsiText, i) => {
+                const huruf = String.fromCharCode(65 + i);
+                const isSelected = ans.includes(i);
+
+                const btn = document.createElement('div');
+                btn.className = `p-4 rounded-xl border-2 cursor-pointer flex items-center gap-3 transition-all ${
+                    isSelected 
+                    ? 'border-blue-600 bg-blue-50/80 text-blue-900 shadow-sm' 
+                    : 'border-slate-200 bg-white/90 hover:border-blue-300 text-slate-700'
+                }`;
+
+                // Radio bulat / Checkbox kotak
+                const shapeClass = soal.multi ? 'rounded-md' : 'rounded-full';
+                const inputIndicator = `
+                    <div class="w-6 h-6 ${shapeClass} border-2 flex items-center justify-center font-bold text-xs transition ${
+                        isSelected ? 'bg-blue-600 border-blue-600 text-white' : 'border-slate-300 text-slate-500'
+                    }">
+                        ${isSelected ? (soal.multi ? '✓' : huruf) : huruf}
+                    </div>
+                `;
+
+                btn.innerHTML = `
+                    ${inputIndicator}
+                    <span class="text-sm font-medium flex-grow">${opsiText}</span>
+                `;
+
+                btn.onclick = () => pilihOpsi(i, soal.multi);
+                container.appendChild(btn);
+            });
+
+            // Update state tombol navigasi
+            document.getElementById('btn-prev').disabled = indexSoalAktif === 0;
+            document.getElementById('btn-prev').style.opacity = indexSoalAktif === 0 ? "0.5" : "1";
+
+            const btnNext = document.getElementById('btn-next');
+            if (indexSoalAktif === soalData.length - 1) {
+                btnNext.innerText = "Selesai & Kirim 🚀";
+                btnNext.className = "bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2.5 rounded-xl shadow transition text-sm";
+            } else {
+                btnNext.innerText = "Selanjutnya ➡️";
+                btnNext.className = "bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl shadow transition text-sm";
+            }
+
+            renderGridNavigasi();
+        }
+
+        function pilihOpsi(opsiIndex, isMulti) {
+            let list = jawabanSiswa[indexSoalAktif] ? [...jawabanSiswa[indexSoalAktif]] : [];
+
+            if (!isMulti) {
+                // Radio Single Choice
+                list = [opsiIndex];
+            } else {
+                // Checkbox Multiple Choice
+                if (list.includes(opsiIndex)) {
+                    list = list.filter(item => item !== opsiIndex);
+                } else {
+                    if (list.length >= 2) {
+                        showModal("Pemberitahuan", "Maksimal 2 jawaban");
+                        return;
+                    }
+                    list.push(opsiIndex);
+                }
+            }
+
+            jawabanSiswa[indexSoalAktif] = list;
+            renderSoal();
+        }
+
+        function navigasiSoal(step) {
+            const targetIndex = indexSoalAktif + step;
+            if (step === 1 && indexSoalAktif === soalData.length - 1) {
+                submitAsesmen();
+                return;
+            }
+            if (targetIndex >= 0 && targetIndex < soalData.length) {
+                indexSoalAktif = targetIndex;
+                renderSoal();
+            }
+        }
+
+        function lompatKeSoal(idx) {
+            indexSoalAktif = idx;
+            renderSoal();
+        }
+
+        function renderGridNavigasi() {
+            const grid = document.getElementById('grid-nomor-soal');
+            grid.innerHTML = "";
+
+            soalData.forEach((_, i) => {
+                const isAktif = i === indexSoalAktif;
+                const isTerjawab = jawabanSiswa[i] && jawabanSiswa[i].length > 0;
+
+                let stateClass = "bg-slate-100 text-slate-600 border-slate-200"; // Belum
+                if (isTerjawab) stateClass = "bg-blue-600 text-white border-blue-600 shadow-sm"; // Sudah
+                if (isAktif) stateClass += " border-4 border-indigo-500 font-extrabold"; // Active Current
+
+                const btn = document.createElement('button');
+                btn.className = `py-2 rounded-xl border text-xs font-semibold transition ${stateClass}`;
+                btn.innerText = i + 1;
+                btn.onclick = () => lompatKeSoal(i);
+                grid.appendChild(btn);
+            });
+        }
+
+        // ----------------------------------------------------
+        // SUBMIT & HASIL ASESMEN
+        // ----------------------------------------------------
+        function submitAsesmen() {
+            clearInterval(timerInterval);
+
+            let totalBenar = 0;
+            let totalSalah = 0;
+            let totalKosong = 0;
+
+            soalData.forEach((soal, i) => {
+                const jwb = jawabanSiswa[i] || [];
+                if (jwb.length === 0) {
+                    totalKosong++;
+                } else {
+                    // Cek Kecocokan Persis
+                    const kunciSorted = [...soal.kunci].sort().join(',');
+                    const jwbSorted = [...jwb].sort().join(',');
+
+                    if (kunciSorted === jwbSorted) {
+                        totalBenar++;
+                    } else {
+                        totalSalah++;
+                    }
+                }
+            });
+
+            const totalSoal = soalData.length;
+            const nilaiAkhir = Math.round((totalBenar / totalSoal) * 100);
+            const akurasi = Math.round((totalBenar / totalSoal) * 100);
+
+            const m = Math.floor(timerSeconds / 60);
+            const s = timerSeconds % 60;
+            const waktuStr = `${m}m ${s < 10 ? '0' : ''}${s}s`;
+            const isTuntas = nilaiAkhir >= 75;
+
+            // Render Halaman Hasil
+            const pHasil = document.getElementById('page-hasil');
+            const pSoal = document.getElementById('page-soal');
+
+            pSoal.classList.add('hidden');
+            pSoal.classList.remove('flex');
+            pHasil.classList.remove('hidden');
+
+            // Logika Judul Dinamis
+            const judulEl = document.getElementById('hasil-judul');
+            if (nilaiAkhir >= 75) {
+                judulEl.innerText = "🎉 Luar Biasa! Pertahankan Prestasimu!";
+            } else {
+                judulEl.innerText = "Ayo Coba lagi dan Tetap Semangat Belajar! 🥰";
+            }
+
+            document.getElementById('hasil-nilai-akhir').innerText = nilaiAkhir;
+            
+            const badgeStatus = document.getElementById('hasil-status-kktp');
+            if (isTuntas) {
+                badgeStatus.innerText = "TUNTAS";
+                badgeStatus.className = "px-4 py-1.5 rounded-full font-bold text-sm bg-green-100 text-green-700 border border-green-300";
+            } else {
+                badgeStatus.innerText = "BELUM TUNTAS";
+                badgeStatus.className = "px-4 py-1.5 rounded-full font-bold text-sm bg-red-100 text-red-700 border border-red-300";
+            }
+
+            document.getElementById('hasil-waktu').innerText = waktuStr;
+            document.getElementById('hasil-benar').innerText = totalBenar;
+            document.getElementById('hasil-salah').innerText = totalSalah;
+            document.getElementById('hasil-kosong').innerText = totalKosong;
+            document.getElementById('hasil-akurasi').innerText = `${akurasi}%`;
+            document.getElementById('hasil-analisis-teks').innerText = `Ananda menjawab benar ${totalBenar} dari ${totalSoal}`;
+
+            const rekomBox = document.getElementById('hasil-rekomendasi-box');
+            if (nilaiAkhir >= 75) {
+                rekomBox.className = "p-4 rounded-xl text-sm font-medium border bg-green-100 text-green-800 border-green-300";
+                rekomBox.innerText = "Hebat! Tuntas lanjutkan materi 🥳";
+            } else {
+                rekomBox.className = "p-4 rounded-xl text-sm font-medium border bg-red-100 text-red-800 border-red-300";
+                rekomBox.innerText = "Yuk belajar lagi nilai KKTP 75 belum tercapai 🙏, disarankan mengulang materi";
+            }
+
+            // Object Data Hasil
+            const dataHasil = {
+                nama: siswaNama,
+                kelas: siswaKelas,
+                nilai: nilaiAkhir,
+                benar: totalBenar,
+                salah: totalSalah,
+                kosong: totalKosong,
+                akurasi: `${akurasi}%`,
+                waktu: waktuStr,
+                status: isTuntas ? "TUNTAS" : "BELUM TUNTAS",
+                tanggal: new Date().toLocaleString('id-ID')
+            };
+
+            // 1. Simpan Lokal & Broadcast
+            simpanKeLocalStorage(dataHasil);
+
+            // 2. AUTO-SAVE (WAJIB SILENT TO GOOGLE SHEET)
+            kirimKeGoogleSheet(dataHasil);
+        }
+
+        function kerjakanLagi() {
+            document.getElementById('page-hasil').classList.add('hidden');
+            document.getElementById('page-greeting').classList.remove('hidden');
+            document.getElementById('input-nama').value = "";
+            document.getElementById('input-kelas').value = "";
+        }
+
+        // ----------------------------------------------------
+        // SYNC LOCALSTORAGE & GOOGLE SHEETS SILENT AUTO SAVE
+        // ----------------------------------------------------
+        function getRekapData() {
+            const dataStr = localStorage.getItem('rekapNanaAlfiana');
+            return dataStr ? JSON.parse(dataStr) : [];
+        }
+
+        function simpanKeLocalStorage(dataBaru) {
+            const currentData = getRekapData();
+            currentData.unshift(dataBaru);
+            localStorage.setItem('rekapNanaAlfiana', JSON.stringify(currentData));
+
+            if (broadcastChannel) {
+                broadcastChannel.postMessage('update_data');
+            }
+        }
+
+        function kirimKeGoogleSheet(data) {
+            // Post silent di background ke SCRIPT_URL Google Apps Script
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(() => {
+                console.log("Data auto-sent to Google Sheets successfully.");
+            }).catch(err => {
+                console.error("Auto-save Google Sheets failed:", err);
+            });
+        }
+
+        // ----------------------------------------------------
+        // FITUR DASHBOARD GURU
+        // ----------------------------------------------------
+        function bukaModalGuru() {
+            showModal("Login Guru", "Masukkan Password untuk Mengakses Dashboard:", true, (inputPass) => {
+                if (inputPass === "123") {
+                    tampilkanDashboardGuru();
+                } else {
+                    showModal("Akses Ditolak", "Password salah!");
+                }
+            });
+        }
+
+        function tampilkanDashboardGuru() {
+            document.getElementById('page-greeting').classList.add('hidden');
+            document.getElementById('page-soal').classList.add('hidden');
+            document.getElementById('page-hasil').classList.add('hidden');
+            document.getElementById('page-guru').classList.remove('hidden');
+
+            renderTabelGuru();
+        }
+
+        function tutupDashboardGuru() {
+            document.getElementById('page-guru').classList.add('hidden');
+            document.getElementById('page-greeting').classList.remove('hidden');
+        }
+
+        function renderTabelGuru() {
+            const data = getRekapData();
+            const tbody = document.getElementById('tabel-rekap-body');
+            tbody.innerHTML = "";
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">Belum ada data siswa.</td></tr>`;
+                document.getElementById('guru-total-siswa').innerText = "0";
+                document.getElementById('guru-rata-rata').innerText = "0";
+                document.getElementById('guru-total-tuntas').innerText = "0";
+                document.getElementById('guru-persen-tuntas').innerText = "0%";
+                return;
+            }
+
+            let totalNilai = 0;
+            let totalTuntas = 0;
+
+            data.forEach((item) => {
+                totalNilai += item.nilai;
+                if (item.nilai >= 75) totalTuntas++;
+
+                const tr = document.createElement('tr');
+                tr.className = "border-b hover:bg-white/50 transition";
+                
+                const badgeStatusClass = item.nilai >= 75 
+                    ? "bg-green-100 text-green-700 border-green-300" 
+                    : "bg-red-100 text-red-700 border-red-300";
+
+                tr.innerHTML = `
+                    <td class="p-3 font-semibold text-slate-800">${item.nama}</td>
+                    <td class="p-3 text-slate-600">${item.kelas}</td>
+                    <td class="p-3 font-extrabold text-blue-600">${item.nilai}</td>
+                    <td class="p-3 text-slate-600">${item.benar}B / ${item.salah}S / ${item.kosong}K</td>
+                    <td class="p-3 text-slate-500">${item.waktu}</td>
+                    <td class="p-3">
+                        <span class="px-2.5 py-1 rounded-full text-[11px] font-bold border ${badgeStatusClass}">
+                            ${item.status}
+                        </span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            const count = data.length;
+            const avg = Math.round(totalNilai / count);
+            const persenTuntas = Math.round((totalTuntas / count) * 100);
+
+            document.getElementById('guru-total-siswa').innerText = count;
+            document.getElementById('guru-rata-rata').innerText = avg;
+            document.getElementById('guru-total-tuntas').innerText = totalTuntas;
+            document.getElementById('guru-persen-tuntas').innerText = `${persenTuntas}%`;
+        }
+
+        function unduhRekapExcel() {
+            const data = getRekapData();
+            if (data.length === 0) {
+                showModal("Informasi", "Tidak ada data untuk diunduh.");
+                return;
+            }
+
+            // Format Data Excel
+            const excelRows = data.map((item, index) => ({
+                "No": index + 1,
+                "Nama Siswa": item.nama,
+                "Kelas / Absen": item.kelas,
+                "Nilai Akhir": item.nilai,
+                "Jumlah Benar": item.benar,
+                "Jumlah Salah": item.salah,
+                "Jumlah Kosong": item.kosong,
+                "Akurasi": item.akurasi,
+                "Waktu Pengerjaan": item.waktu,
+                "Status KKTP": item.status,
+                "Waktu Selesai": item.tanggal
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(excelRows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Rekap Asesmen");
+
+            XLSX.writeFile(workbook, "Rekap_Asesmen_Kelas3_by_Nana_Alfiana.xlsx");
+        }
+
+        function hapusSemuaDataGuru() {
+            showModal("Konfirmasi Hapus", "Apakah Anda yakin ingin menghapus semua rekap data?", true, (input) => {
+                if (input === "123") {
+                    localStorage.removeItem('rekapNanaAlfiana');
+                    if (broadcastChannel) broadcastChannel.postMessage('update_data');
+                    renderTabelGuru();
+                    showModal("Berhasil", "Data rekap berhasil dibersihkan.");
+                } else {
+                    showModal("Gagal", "Password salah, gagal menghapus data.");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
